@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1559471942 source:f:\c++ code\battleship\main.c
+1561672001 source:f:\c++ code\komeil battle ship\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
