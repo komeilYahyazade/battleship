@@ -96,7 +96,8 @@ void estekhraj_va_jagozari(char table[][sizeOfTable],char mokhtasat[][20])
         }
         if (mokhtasat[counter][0]== 'B')
         {
-            if ((strstr(mokhtasat[counter],"right") == 0 )&&(strstr(mokhtasat[counter],"left") == 0 )&&(strstr(mokhtasat[counter],"down")== 0)&&(strstr(mokhtasat[counter],"up") == 0)){
+            if ((strstr(mokhtasat[counter],"right") == 0 )&&(strstr(mokhtasat[counter],"left") == 0 )&&(strstr(mokhtasat[counter],"down")== 0)&&(strstr(mokhtasat[counter],"up") == 0))
+            {
                 printf("eshtebah dar vared kardane mokhtasat,dobare emtehan konid:\n");
                 continue;
             }
@@ -197,65 +198,61 @@ void estekhraj_va_jagozari_AI(char table[][sizeOfTable])
         }
         else
         {
-            printf("salam");
             if (direction==0)
             {
-                if (((x+1)> sizeOfTable) || (table[x+1][y] != 0) )
+                if (((x+1)> sizeOfTable) || (table[x+1][y] != '0') )
                 {
                     continue;
                 }
                 else
                 {
-                    table[x][y]=1;
-                    table[x+1][y]=1 ;
+                    table[x][y]=CounterForB+50;
+                    table[x+1][y]=CounterForB+50 ;
                     CounterForB++ ;
                 }
             }
             else  if (direction==1)
             {
-                if (((x-1) < 0 ) || (table[x-1][y] != 0) )
+                if (((x-1) < 0 ) || (table[x-1][y] != '0') )
                 {
                     continue;
                 }
                 else
                 {
-                    table[x][y]=1;
-                    table[x-1][y]=1 ;
+                    table[x][y]=CounterForB+50;
+                    table[x-1][y]=CounterForB+50;
                     CounterForB++ ;
                 }
             }
             else if (direction==2)
             {
-                if (((y-1)<0) || (table[x][y-1] != 0) )
+                if (((y-1)<0) || (table[x][y-1] != '0') )
                 {
                     continue;
                 }
                 else
                 {
-                    table[x][y]=1;
-                    table[x][y-1]=1 ;
+                    table[x][y]=CounterForB+50;
+                    table[x][y-1]=CounterForB+50 ;
                     CounterForB++ ;
                 }
             }
-          else  if (direction==3)
+            else  if (direction==3)
             {
-                if (((y+1)> sizeOfTable) || (table[x][y+1] != 0))
+                if (((y+1)> sizeOfTable) || (table[x][y+1] != '0'))
                 {
-                    printf("salamidobare");
                     continue;
                 }
                 else
                 {
 
-                    table[x][y]=1;
-                    table[x][y+1]=1 ;
+                    table[x][y]=CounterForB+50;
+                    table[x][y+1]=CounterForB+50 ;
                     CounterForB++ ;
                 }
             }
         }
     }
-    show_array(table);
-
     printf("\nAI keshti haye khodesh ro chid\n");
 
 }
@@ -301,17 +298,38 @@ void attack(char table[][sizeOfTable],char table_unknown [][sizeOfTable],int* te
         table_unknown[x][y]= ' ' ;
     }
 }
-void attack_AI(char table[][sizeOfTable],int* tedade_baghimande)//inja bayad int* begiram tedade baqimande ro,byd beram syntaxesho yad begirm albate mitoonm global ham tarif konm
+void attack_AI(char table[][sizeOfTable],int* tedade_baghimande)
 {
     int x,y ;
     srand(time(0));
     x=rand()%sizeOfTable;
     y=rand()%sizeOfTable;
-    if (table[x][y]=='1')
+    if (table[x][y]!='0')
     {
-        table[x][y]='0';
+        if (table[x][y]== '1')
+        {
+            (*tedade_baghimande) -- ;
+            table[x][y]='0';
+        }
+        else
+        {
+            int counter_bomb=0;
+            int i,j ;
+            for(i=0; i<sizeOfTable; i++)
+            {
+                for( j=0; j<sizeOfTable; j++)
+                {
+                    if (table[i][j]==table[x][y])
+                        counter_bomb++ ;
+
+                }
+            }
+            if (counter_bomb==1)
+                (*tedade_baghimande)-- ;
+            table[x][y]='0';
+
+        }
         printf("\nAI jaii ke keshti gharar dasht ro hadaf qarar dad :)!\n");
-        *tedade_baghimande -- ;
 
     }
     else if (table[x][y]=='0')
@@ -370,10 +388,8 @@ int main()
         printf("\n**Player enter inputs***\n");
         estekhraj_va_jagozari(table1,mokhtasat_1);
         estekhraj_va_jagozari_AI(table2);
-        return 0 ;
-        int tedade_baghimande_1,tedade_baghimande_2 ;
-        tedade_baghimande_1 = tedade_keshti ;
-        tedade_baghimande_2 = tedade_keshti ;
+        tedade_baghimande_1=tedade_keshti ;
+        tedade_baghimande_2=tedade_keshti ;
         while (1)
         {
             printf("nobate player e");
